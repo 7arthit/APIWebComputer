@@ -1,5 +1,6 @@
 ﻿using ExWebComputer.Data;
 using ExWebComputer.Model;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace ExWebComputer.Repositories
@@ -16,12 +17,12 @@ namespace ExWebComputer.Repositories
 
         public IEnumerable<Product> GetAll()
         {
-            return _context.Products;
+            return _context.Products.Include("ProductType");
         }
 
         public Product? GetById(int id)
         {
-            return _context.Products.FirstOrDefault(p => p.Id == id);
+            return _context.Products.Include("ProductType").FirstOrDefault(p => p.Id == id);
         }
 
 

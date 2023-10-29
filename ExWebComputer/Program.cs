@@ -1,5 +1,8 @@
 using ExWebComputer.Data;
+using ExWebComputer.Repositories;
+using ExWebComputer.Service;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +16,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbcontext>(option =>{
     option.UseSqlServer(builder.Configuration.GetConnectionString("Connection"));
 });
+
+builder.Services.AddScoped<IProductRepositories, ProductRepositories>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
