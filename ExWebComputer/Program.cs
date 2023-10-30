@@ -13,7 +13,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//จัดการกับการเชื่อมต่อกับฐานข้อมูล
 builder.Services.AddDbContext<AppDbcontext>(option =>{
+    //การเชื่อมต่อกับฐานข้อมูล SQL Server โดยใช้ Connection String
     option.UseSqlServer(builder.Configuration.GetConnectionString("Connection"));
 });
 

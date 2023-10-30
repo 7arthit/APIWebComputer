@@ -15,16 +15,15 @@ namespace ExWebComputer.Service
             _productRepo = productRepo;
         }
 
-        public List<Product> GetProducts()
+        public List<Product> GetProducts(string? search, int? typeId, int? page, int? per_page)
         {
-            return _productRepo.GetAll().ToList();
+            return _productRepo.GetAll(search, typeId, page, per_page).ToList();
         }
 
         public Product? GetProduct(int productId)
         {
             return _productRepo.GetById(productId);
         }
-
 
         public Product CreatProduct(Product product)
         {

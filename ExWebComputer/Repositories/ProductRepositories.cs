@@ -2,6 +2,7 @@
 using ExWebComputer.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Linq;
 
 namespace ExWebComputer.Repositories
 {
@@ -15,16 +16,19 @@ namespace ExWebComputer.Repositories
             _context = context;
         }
 
-        public IEnumerable<Product> GetAll()
+        public IEnumerable<Product> GetAll(string? search, int? typeId, int? page, int? per_page)
         {
-            return _context.Products.Include("ProductType");
+            int pageNumber = page ?? 1;
+            int limit = per_page ?? 10;
+            return _context.Products.Include("ProductType")
+                .Where(p => search == null || p.Name.Contains(search))
+                .Where(p => typeId == null || p.ProductTypeId == typeId).Skip((pageNumber - 1) * limit).Take(limit); 
         }
 
         public Product? GetById(int id)
         {
             return _context.Products.Include("ProductType").FirstOrDefault(p => p.Id == id);
         }
-
 
         public Product Create(Product product)
         {
@@ -47,10 +51,9 @@ namespace ExWebComputer.Repositories
                 result.ProductTypeId = result.ProductTypeId;
                 _context.SaveChanges();
             }
-            return null;
+            return result;
         }
         
-
         public Product? Delete(int id)
         {
             Product? result = _context.Products.FirstOrDefault(p => p.Id == id);
@@ -59,7 +62,7 @@ namespace ExWebComputer.Repositories
                 _context.Remove(result);
                 _context.SaveChanges();
             }
-            return null;
+            return result;
         }
     }
 }
