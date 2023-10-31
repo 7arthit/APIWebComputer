@@ -1,6 +1,8 @@
-﻿using ExWebComputer.Model;
+﻿using ExWebComputer.DTOs;
+using ExWebComputer.Model;
 using ExWebComputer.Service;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace ExWebComputer.Controllers
 {
@@ -41,7 +43,14 @@ namespace ExWebComputer.Controllers
         public ActionResult AddEmployee([FromBody] Employee employee)
         {
             var addedEmployee = _employeeService.CreatEmployee(employee);
-            return CreatedAtAction(nameof(AddEmployee), new { id = addedEmployee.Id }, employee);
+            if (addedEmployee.GetType() == typeof(AppResponse))
+            {
+                return BadRequest(addedEmployee);
+            }
+            else
+            {
+                return CreatedAtAction(nameof(AddEmployee), addedEmployee);
+            }
         }
 
         //---------- แก้ไข พนักงาน ----------//
@@ -65,6 +74,22 @@ namespace ExWebComputer.Controllers
             Employee? employee = _employeeService.DeleteEmployee(id);
             if (employee == null) return NotFound("Employee Notfound");
             return NoContent();
+        }
+
+        //---------- เข้าสู่ระบบ ----------//
+
+        [HttpPost("Login")]
+        public ActionResult Login(LoginDTO logindto)
+        {
+            Employee? employee = _employeeService.Login(logindto);
+            if (employee == null) return BadRequest(                
+                new AppResponse {
+                        id = 0,
+                        code = HttpStatusCode.BadRequest,
+                        Message = "Login filed"
+                    }
+                );
+            return Ok(employee);
         }
     }
 }

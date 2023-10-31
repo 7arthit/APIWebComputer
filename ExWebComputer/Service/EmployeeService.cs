@@ -1,6 +1,8 @@
-﻿using ExWebComputer.Model;
+﻿using ExWebComputer.DTOs;
+using ExWebComputer.Model;
 using ExWebComputer.Repositories;
 using System;
+using System.Net;
 
 namespace ExWebComputer.Service
 {
@@ -29,9 +31,23 @@ namespace ExWebComputer.Service
 
         //---------- เพิ่ม พนักงาน ----------//
 
-        public Employee CreatEmployee(Employee employee)
+        public object CreatEmployee(Employee employee)
         {
-            return _employeeRepo.Create(employee);
+            var emp = _employeeRepo.GetByUserName(employee.UserName);
+            if (emp != null)
+            {
+                return new AppResponse{
+                    id = 0,
+                    code = HttpStatusCode.BadRequest,
+                    Message = "This Username exists."
+                };
+            } 
+            else
+            {
+                string hashed = BCrypt.Net.BCrypt.HashPassword(employee.Password);
+                employee.Password = hashed;
+                return _employeeRepo.Create(employee);
+            }
         }
 
         //---------- แก้ไข พนักงาน ----------//
@@ -46,6 +62,24 @@ namespace ExWebComputer.Service
         public Employee? DeleteEmployee(int employeeId)
         {
             return _employeeRepo.Delete(employeeId);
+        }
+
+        public Employee? Login(LoginDTO logindto)
+        {
+            var emp = _employeeRepo.GetByUserName(logindto.UserName);
+            if(emp != null)
+            {
+                bool isValid = BCrypt.Net.BCrypt.Verify(logindto.Password, emp.Password);
+                if (isValid)
+                {
+                    return emp;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            return null;
         }
     }
 }

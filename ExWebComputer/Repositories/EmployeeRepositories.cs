@@ -33,6 +33,14 @@ namespace ExWebComputer.Repositories
             return _context.Employees.FirstOrDefault(p => p.Id == id);
         }
 
+
+        //---------- ค้นหา พนักงาน ด้วย username ----------//
+
+        public Employee? GetByUserName(string username)
+        {
+            return _context.Employees.FirstOrDefault(p => p.UserName == username);
+        }
+
         //---------- เพิ่ม พนักงาน ----------//
 
         public Employee Create(Employee employee)
@@ -67,7 +75,7 @@ namespace ExWebComputer.Repositories
             Employee? result = _context.Employees.FirstOrDefault(p => p.Id == id);
             if (result != null)
             {
-                _context.Remove(result);
+                _context.Employees.Remove(result);
                 _context.SaveChanges();
             }
             return result;

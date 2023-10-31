@@ -15,5 +15,7 @@ namespace ExWebComputer.Repositories
         Employee? Update(Employee employee);
 
         Employee? Delete(int id);
+
+        Employee? GetByUserName(string username);
     }
 }

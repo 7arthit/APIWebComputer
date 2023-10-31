@@ -1,4 +1,5 @@
-﻿using ExWebComputer.Model;
+﻿using ExWebComputer.DTOs;
+using ExWebComputer.Model;
 
 namespace ExWebComputer.Service
 {
@@ -8,10 +9,12 @@ namespace ExWebComputer.Service
 
         Employee? GetEmployee(int employeeId);
 
-        Employee CreatEmployee(Employee employee);
+        object CreatEmployee(Employee employee);
 
         Employee? UpdateEmployee(Employee employee);
 
         Employee? DeleteEmployee(int employeeId);
+
+        Employee? Login(LoginDTO logindto);
     }
 }
