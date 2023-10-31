@@ -16,6 +16,8 @@ namespace ExWebComputer.Repositories
             _context = context;
         }
 
+        //---------- ค้นหา สินค้า ----------//
+
         public IEnumerable<Product> GetAll(string? search, int? typeId, int? page, int? per_page)
         {
             int pageNumber = page ?? 1;
@@ -25,10 +27,14 @@ namespace ExWebComputer.Repositories
                 .Where(p => typeId == null || p.ProductTypeId == typeId).Skip((pageNumber - 1) * limit).Take(limit); 
         }
 
+        //---------- ค้นหา สินค้า ด้วย id ----------//
+
         public Product? GetById(int id)
         {
             return _context.Products.Include("ProductType").FirstOrDefault(p => p.Id == id);
         }
+
+        //---------- เพิ่ม สินค้า ----------//
 
         public Product Create(Product product)
         {
@@ -36,6 +42,8 @@ namespace ExWebComputer.Repositories
             _context.SaveChanges();
             return result.Entity;
         }
+
+        //---------- แก้ไข สินค้า ----------//
 
         public Product? Update(Product product)
         {
@@ -53,7 +61,9 @@ namespace ExWebComputer.Repositories
             }
             return result;
         }
-        
+
+        //---------- ลบ สินค้า ----------//
+
         public Product? Delete(int id)
         {
             Product? result = _context.Products.FirstOrDefault(p => p.Id == id);

@@ -1,9 +1,6 @@
 ﻿using ExWebComputer.Model;
-using ExWebComputer.Repositories;
 using ExWebComputer.Service;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 
 namespace ExWebComputer.Controllers
 {
@@ -13,16 +10,22 @@ namespace ExWebComputer.Controllers
     {
         private readonly IProductService _productService;
 
+        //---------- การ injection ----------//
+
         public ProductsControllers(IProductService productService)
         {
             _productService = productService;
         }
+
+        //---------- ค้นหา สินค้า ----------//
 
         [HttpGet]
         public ActionResult GetProducts([FromQuery]string? search, int? typeId, int? page, int? per_page)
         {
             return Ok(_productService.GetProducts(search, typeId, page, per_page));
         }
+
+        //---------- ค้นหา สินค้า ด้วย id ----------//
 
         [HttpGet("{id}")]
         public ActionResult GetProduct(int id)
@@ -32,12 +35,16 @@ namespace ExWebComputer.Controllers
             return Ok(product);
         }
 
+        //---------- เพิ่ม สินค้า ----------//
+
         [HttpPost]
         public ActionResult AddProduct([FromBody]Product product)
         {
             var addedProduct = _productService.CreatProduct(product);
             return CreatedAtAction(nameof(AddProduct), new { id = addedProduct.Id}, product);
         }
+
+        //---------- แก้ไข สินค้า ----------//
 
         [HttpPut("{id}")]
         public ActionResult UpdateProduct(int id, Product product)
@@ -49,6 +56,8 @@ namespace ExWebComputer.Controllers
             }
             return BadRequest("update filed");
         }
+
+        //---------- ลบ สินค้า ----------//
 
         [HttpDelete("{id}")]
         public ActionResult DeleteProduct(int id)
