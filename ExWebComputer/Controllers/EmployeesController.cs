@@ -22,9 +22,9 @@ namespace ExWebComputer.Controllers
         //---------- ค้นหา พนักงาน ----------//
 
         [HttpGet]
-        public ActionResult GetEmployees([FromQuery] string? search, int? page, int? per_page)
+        public ActionResult GetEmployees([FromQuery] string? search)
         {
-            return Ok(_employeeService.GetEmployees(search, page, per_page));
+            return Ok(_employeeService.GetEmployees(search));
         }
 
         //---------- ค้นหา พนักงาน ด้วย id ----------//

@@ -6,7 +6,7 @@ namespace ExWebComputer.Repositories
 {
     public interface IEmployeeRepositories
     {
-        IEnumerable<Employee> GetAll(string? search, int? page, int? per_page);
+        IEnumerable<Employee> GetAll(string? search);
 
         Employee? GetById(int id);
 

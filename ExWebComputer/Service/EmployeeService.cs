@@ -17,9 +17,9 @@ namespace ExWebComputer.Service
 
         //---------- ค้นหา พนักงาน ----------//
 
-        public List<Employee> GetEmployees(string? search, int? page, int? per_page)
+        public List<Employee> GetEmployees(string? search)
         {
-            return _employeeRepo.GetAll(search, page, per_page).ToList();
+            return _employeeRepo.GetAll(search).ToList();
         }
 
         //---------- ค้นหา พนักงาน ด้วย id ----------//

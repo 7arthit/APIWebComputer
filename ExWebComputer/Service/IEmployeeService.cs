@@ -5,7 +5,7 @@ namespace ExWebComputer.Service
 {
     public interface IEmployeeService
     {
-        List<Employee> GetEmployees(string? search, int? page, int? per_page);
+        List<Employee> GetEmployees(string? search);
 
         Employee? GetEmployee(int employeeId);
 

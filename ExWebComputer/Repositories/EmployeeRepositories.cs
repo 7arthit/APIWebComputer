@@ -17,13 +17,10 @@ namespace ExWebComputer.Repositories
 
         //---------- ค้นหา พนักงาน ----------//
 
-        public IEnumerable<Employee> GetAll(string? search, int? page, int? per_page)
+        public IEnumerable<Employee> GetAll(string? search)
         {
-            int pageNumber = page ?? 1;
-            int limit = per_page ?? 10;
             return _context.Employees
-                .Where(p => search == null || p.Name.Contains(search))
-                .Skip((pageNumber - 1) * limit).Take(limit);
+                .Where(p => search == null || p.Name.Contains(search));
         }
 
         //---------- ค้นหา พนักงาน ด้วย id ----------//
